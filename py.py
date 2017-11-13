@@ -1,10 +1,11 @@
 import numpy as np
 import sys
 import keras
+from keras.layers.core import  Reshape,RepeatVector
 from keras.datasets import mnist
 from keras.utils import np_utils
 from keras.models import Sequential
-from keras.layers import Conv1D, MaxPooling1D, Embedding
+from keras.layers import Conv1D, MaxPooling1D, Embedding,LSTM
 from keras.layers import Dense, Activation, Convolution2D, MaxPooling2D, Flatten
 from keras.optimizers import Adam
 from keras.preprocessing import sequence
@@ -33,7 +34,7 @@ for line in f:
 
     if line.strip()=='':
         type=1
-        for i in range(50-len(mid)):
+        for i in range(100-len(mid)):
             mid.append(list)
         X.append(mid)
         mid=[]
@@ -57,38 +58,31 @@ Y1 = np.array(Y1)
 X2 = np.array(X2)
 Y2 = np.array(Y2)
 
-print(len(X1[0][0]))
-print(X1[1][0])
-print(X1[1][48])
-print(len(X1[1][48]))
 
-X1=X1.reshape(len(X1),1)
-X2=X2.reshape(len(X2),1)
-Y1=Y1.reshape(len(Y1),1)
-Y2=Y2.reshape(len(Y1),1)
+
+X1=X1.reshape(len(X1),100,200)
+X2=X2.reshape(len(X2),100,200)
+
 
 f.close()
 model = Sequential()
 # kernel_size = (3,3)
-# embedding_layer = Embedding(len(X1) + 1,
-#                             60,
-#                             input_length=1000,
-#                             trainable=True)
-# model.add(embedding_layer)
-model.add(Dense(units=len(X1),batch_input_shape=(57,1)))
-model.add(Activation('relu'))
-#model.add(Flatten())
-model.add(Dense(1))
 
-model.add(Activation('softmax'))
+model.add(Dense(units=200,batch_input_shape=(57,100,200)))
+model.add(Activation('linear'))
 
-model.compile(loss='categorical_crossentropy',
-                         optimizer='sgd',
-                         metrics=['accuracy'])
-model.compile(loss=keras.losses.sparse_categorical_crossentropy,
-                         optimizer=keras.optimizers.SGD(lr=0.01, momentum=0.9, nesterov=True))
-model.summary()
-model.fit(X1,Y1,epochs=1, batch_size=64)
+model.add(Flatten())
+model.add(Reshape((100, 200)))
+#model.add(Dense(1))
+#model.add(Activation('linear'))
+
+model.compile(loss='categorical_crossentropy',optimizer='sgd',metrics=['accuracy'])
+
+# model.compile(loss='mean_squared_error',
+#                          optimizer=keras.optimizers.Adadelta())
+model.fit(X1,Y1,epochs=3, batch_size=32)
 #
-loss_and_metrics=model.evaluate(X2,Y2,batch_size=64)
-print(loss_and_metrics)
+loss, accuracy = model.evaluate(X2, Y2)
+
+print('\ntest loss: ', loss)
+print('\ntest accuracy: ', accuracy)

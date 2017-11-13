@@ -1,0 +1,4 @@
+[mysql]
+name = root
+password =
+dbname=address

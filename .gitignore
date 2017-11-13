@@ -1,2 +1,5 @@
 /.idea
 /vendor
+mysql.conf
+shanghai.csv
+sh.csv
