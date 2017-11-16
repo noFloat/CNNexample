@@ -1,4 +1,5 @@
 import numpy as np
+import os
 import sys
 import keras
 from keras.layers.core import  Reshape,RepeatVector
@@ -12,6 +13,10 @@ from keras.preprocessing import sequence
 from keras.utils.np_utils import to_categorical
 np.random.seed(1337)
 path='1.txt'
+def file_name(file_dir):
+         for root, dirs, files in os.walk(file_dir):
+             return files
+
 def process_line(line):
     lineSpilt = line.split(' ',1)
     goalLine=lineSpilt[1]
@@ -22,33 +27,37 @@ def process_line(line):
     # print(x)
     #sys.exit()
     return tmp
-
-f = open(path)
 X = []
 Y = []
-type=1
-mid=[]
-list = [0.0 for i in range(200)]
+def load(path):
+    f = open("./txt/"+path)
+    type = 1
+    mid = []
+    list = [0.0 for i in range(200)]
 
-for line in f:
+    for line in f:
 
-    if line.strip()=='':
-        type=1
-        for i in range(100-len(mid)):
-            mid.append(list)
-        X.append(mid)
-        mid=[]
-        continue
+        if line.strip() == '':
+            type = 1
+            for i in range(100 - len(mid)):
+                mid.append(list)
+            X.append(mid)
+            mid = []
+            continue
 
+        if type == 1:
+            Y.append(line.strip('\n').rstrip())
+            type = 0
+        else:
+            x = process_line(line)
+            mid.append(x)
 
-    if type==1:
-        Y.append(line.strip('\n').rstrip())
-        type=0
-    else:
-        x=process_line(line)
-        mid.append(x)
+    f.close()
 
-
+files=file_name("./txt/")
+for file in files:
+    if(file!='.DS_Store'):
+        load(file)
 X1=X[:int(len(X)/2)]
 X2=X[int(len(X)/2)+1:]
 Y1=X[:int(len(Y)/2)]
@@ -64,7 +73,6 @@ X1=X1.reshape(len(X1),100,200)
 X2=X2.reshape(len(X2),100,200)
 
 
-f.close()
 model = Sequential()
 # kernel_size = (3,3)
 
