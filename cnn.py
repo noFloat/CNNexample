@@ -1,13 +1,14 @@
 import numpy as np
 import os
+import theano
 import sys
 import keras
-from keras.layers.core import  Reshape,RepeatVector
+from keras.layers.core import  Reshape,RepeatVector,Dropout
 from keras.datasets import mnist
 from keras.utils import np_utils
 from keras.models import Sequential
-from keras.layers import Conv1D, MaxPooling1D, Embedding,LSTM
-from keras.layers import Dense, Activation, Convolution2D, MaxPooling2D, Flatten
+from keras.layers import *
+from keras.layers.merge import add,Add
 from keras.optimizers import Adam
 from keras.preprocessing import sequence
 from keras.utils.np_utils import to_categorical
@@ -59,6 +60,7 @@ for file in files:
     if(file!='.DS_Store'):
         load(file)
 X1=X[:int(len(X)/2)]
+
 X2=X[int(len(X)/2)+1:]
 Y1=X[:int(len(Y)/2)]
 Y2=X[int(len(Y)/2)+1:]
@@ -72,17 +74,58 @@ Y2 = np.array(Y2)
 X1=X1.reshape(len(X1),100,200)
 X2=X2.reshape(len(X2),100,200)
 
-
 model = Sequential()
-# kernel_size = (3,3)
 
-model.add(Dense(units=200,batch_input_shape=(57,100,200)))
-model.add(Activation('linear'))
+batch_size = 128
+nb_classes = 10
+epochs = 12
+# input image dimensions
+img_rows, img_cols = 28, 28
+# number of convolutional filters to use
+nb_filters = 200
+# size of pooling area for max pooling
+pool_size = (2, 2)
+# convolution kernel size
 
-model.add(Flatten())
+
+theano.config.exception_verbosity = 'high'
+model.add(Dense(units=200,batch_input_shape=(32,100,200)))
+model.add(Conv1D(200,
+                 2,
+                 padding='same',
+                 activation='relu',
+                 input_shape=(57,100)))
+
+
+# model.add(Conv1D(200, 2,
+#                         padding='causal',
+#                  input_shape=(2,100,200))) # 卷积层1
+model.add(Activation('relu')) #激活层
+model.add(Dense(units=200,batch_input_shape=(32,100,200)))
+model.summary()
+
+model.add(MaxPooling1D(pool_size=1)) #池化层
+model.add(Flatten()) #拉成一维数据
+model.summary()
 model.add(Reshape((100, 200)))
-#model.add(Dense(1))
-#model.add(Activation('linear'))
+#model.add(Dense(1)) #全连接层1
+# model.add(Activation('relu')) #激活层
+# model.add(Dense(nb_classes)) #全连接层2
+#model.add(Activation('softmax'))
+
+# model.add(Dense(units=200,batch_input_shape=(57,100,200)))
+#
+model.summary()
+#
+#
+#
+# model.add(Activation('linear'))
+# #
+# model.add(Flatten())
+# #
+# model.add(Reshape((100, 200)))
+# #model.add(Dense(1))
+# model.add(Activation('linear'))
 
 model.compile(loss='categorical_crossentropy',optimizer='sgd',metrics=['accuracy'])
 
