@@ -77,48 +77,107 @@ X2 = np.array(X2)
 Y2 = np.array(Y2)
 
 
-
 X1=X1.reshape(len(X1),100,200)
 X2=X2.reshape(len(X2),100,200)
 
 model = Sequential()
 
-batch_size = 128
-nb_classes = 10
-epochs = 12
-# input image dimensions
-img_rows, img_cols = 28, 28
-# number of convolutional filters to use
-nb_filters = 200
-# size of pooling area for max pooling
-pool_size = (2, 2)
-# convolution kernel size
 
-model.add(Dense(units=200,batch_input_shape=(32,100,200)))
-model.add(Conv1D(200,
-                 2,
-                 padding='same',
-                 activation='relu',
-                 input_shape=(57,100)))
+nb_words = min(7000, len(X1))
+embedding_matrix = np.zeros((nb_words + 1, 200))
+
+# embedding_layer = Embedding(nb_words+1,
+#                             200,
+#                             input_length=920,
+#                             weights=[embedding_matrix],
+#                             trainable=True)
+
+embedding_layer = Embedding(nb_words+1,
+                            200,
+                            input_shape=(100,200),
+                            weights=[embedding_matrix],
+                            trainable=True)
+model_left = Sequential()
+# model.add(Input(shape=(MAX_SEQUENCE_LENGTH,), dtype='int32'))
+
+# model_left.add(embedding_layer)
+# model_left.add(Conv1D(200,12, activation='tanh'))
+# model_left.add(MaxPooling1D(4))
+# model_left.add(Conv1D(200, 28, activation='tanh'))
+# model_left.add(MaxPooling1D(2))
+
+# model_left.add(Conv1D(200, 5, activation='tanh'))
+# model_left.add(MaxPooling1D(35))
+#model_left.add(Flatten())
+model_left.summary()
+
+# model_right = Sequential()
+# model_right.add(embedding_layer)
+# model_right.add(Conv1D(128, 4, activation='tanh'))
+# model_right.add(MaxPooling1D(4))
+# model_right.add(Conv1D(128, 4, activation='tanh'))
+# model_right.add(MaxPooling1D(4))
+# model_right.add(Conv1D(128, 4, activation='tanh'))
+# model_right.add(MaxPooling1D(28))
+#model_right.add(Flatten())
+
+# model_3 = Sequential()
+# model_3.add(embedding_layer)
+# model_3.add(Conv1D(200, 6, activation='tanh'))
+# model_3.add(MaxPooling1D(3))
+# model_3.add(Conv1D(200, 6, activation='tanh'))
+# model_3.add(MaxPooling1D(3))
+model_3 = Sequential()
+model_3.add(embedding_layer)
+model_3.add(Conv2D(200, 6, activation='tanh'))
+model_3.add(MaxPooling2D(3))
+model_3.add(Conv2D(200, 6, activation='tanh'))
+model_3.add(MaxPooling2D(3))
+# model_3.add(Conv1D(200, 6, activation='tanh'))
+# model_3.add(MaxPooling1D(30))
+model_3.add(Flatten())
+
+model_3.summary()
+
+# model_3 = Sequential()
+# model_3.add(Conv1D(200, 3, activation='tanh',input_shape=(100,200)))
+# model_3.add(MaxPooling1D(3))
+# model_3.add(Conv1D(200, 3, activation='tanh'))
+# model_3.add(MaxPooling1D(3))
+# model_3.summary()
+
+#merged = Merge([model_left,model_3],concat_axis=1)
+
+
+#model.add(Dense(units=200,batch_input_shape=(32,100,200)))
+
+model.add(model_3)
+
+# model.add(Conv1D(200,
+#                  2,
+#                  padding='same',
+#                  activation='relu',
+#                  input_shape=(57,100)))
 
 
 # model.add(Conv1D(200, 2,
 #                         padding='causal',
 #                  input_shape=(2,100,200))) # 卷积层1
-model.add(Activation('relu')) #激活层
+#model.add(Activation('relu')) #激活层
 
-model.add(MaxPooling1D(pool_size=1)) #池化层
-model.add(Dropout(0.25))
-model.add(Flatten()) #拉成一维数据
-model.summary()
-model.add(Reshape((100, 200)))
+#model.add(MaxPooling1D(pool_size=1)) #池化层
+#model.add(Dropout(0.25))
+#model.add(Flatten()) #拉成一维数据
+
+
+#model.add(Reshape((100, 200)))
 #model.add(Dense(1)) #全连接层1
 model.add(Activation('relu')) #激活层
 model.add(Dropout(0.5))
-model.add(Dense(200)) #全连接层2
+model.add(Dense(20000)) #全连接层2
+model.add(Reshape((100, 200)))
 model.add(Activation('softmax'))
 
-# model.add(Dense(units=200,batch_input_shape=(57,100,200)))
 #
 model.summary()
 #
