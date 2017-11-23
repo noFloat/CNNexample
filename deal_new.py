@@ -47,6 +47,9 @@ def load(path):
     f.close()
     f2.close()
 files=file_name("./txt/")
+
+
+
 for file in files:
     if(file!='.DS_Store'):
         load(file)

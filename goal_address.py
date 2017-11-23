@@ -99,6 +99,7 @@ def search_data(param,low,max,db):
 # 文档名字替换
 def search_goal(param,db):
     cursor = db.cursor()
+    param = param.replace("'","")
     sql = "select  *   from address_last where  address_name ='" + param + "';"
     try:
         cursor.execute(sql)
