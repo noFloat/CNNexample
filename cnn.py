@@ -12,8 +12,12 @@ from keras.layers.merge import add,Add
 from keras.optimizers import Adam
 from keras.preprocessing import sequence
 from keras.utils.np_utils import to_categorical
+import goal_address
 np.random.seed(1337)
 path='1.txt'
+db = goal_address.connectdb()
+
+
 def file_name(file_dir):
          for root, dirs, files in os.walk(file_dir):
              return files
@@ -30,8 +34,11 @@ def process_line(line):
     return tmp
 X = []
 Y = []
+
+
+
 def load(path):
-    f = open("./txt/"+path)
+    f = open("./new_content/"+path)
     type = 1
     mid = []
     list = [0.0 for i in range(200)]
@@ -55,7 +62,7 @@ def load(path):
 
     f.close()
 
-files=file_name("./txt/")
+files=file_name("./new_content/")
 for file in files:
     if(file!='.DS_Store'):
         load(file)
@@ -87,8 +94,6 @@ nb_filters = 200
 pool_size = (2, 2)
 # convolution kernel size
 
-
-theano.config.exception_verbosity = 'high'
 model.add(Dense(units=200,batch_input_shape=(32,100,200)))
 model.add(Conv1D(200,
                  2,
@@ -101,17 +106,17 @@ model.add(Conv1D(200,
 #                         padding='causal',
 #                  input_shape=(2,100,200))) # 卷积层1
 model.add(Activation('relu')) #激活层
-model.add(Dense(units=200,batch_input_shape=(32,100,200)))
-model.summary()
 
 model.add(MaxPooling1D(pool_size=1)) #池化层
+model.add(Dropout(0.25))
 model.add(Flatten()) #拉成一维数据
 model.summary()
 model.add(Reshape((100, 200)))
 #model.add(Dense(1)) #全连接层1
-# model.add(Activation('relu')) #激活层
-# model.add(Dense(nb_classes)) #全连接层2
-#model.add(Activation('softmax'))
+model.add(Activation('relu')) #激活层
+model.add(Dropout(0.5))
+model.add(Dense(200)) #全连接层2
+model.add(Activation('softmax'))
 
 # model.add(Dense(units=200,batch_input_shape=(57,100,200)))
 #
@@ -130,8 +135,8 @@ model.summary()
 model.compile(loss='categorical_crossentropy',optimizer='sgd',metrics=['accuracy'])
 
 # model.compile(loss='mean_squared_error',
-#                          optimizer=keras.optimizers.Adadelta())
-model.fit(X1,Y1,epochs=3, batch_size=32)
+#                           optimizer=keras.optimizers.Adadelta())
+model.fit(X1,Y1,epochs=1, batch_size=32)
 #
 loss, accuracy = model.evaluate(X2, Y2)
 

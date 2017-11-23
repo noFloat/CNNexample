@@ -36,7 +36,7 @@ def load(path):
             if(goal!=0):
 
                 type_content = 0
-                f2.write(goal)
+                f2.write(str(goal))
                 f2.write('\n')
             else:
                 type_content = 1
