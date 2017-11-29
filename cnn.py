@@ -34,16 +34,15 @@ def process_line(line):
     string = re.sub(str1, str2, lineSpilt[0])
 
 
-    if(string==''):
+    if(string!=''):
 
         goalLine=lineSpilt[1]
         tmp = [float(val) for val in goalLine.strip('\n').rstrip().split(' ')]
         x = np.array(tmp[0:])
         for i in(range(100-len(x))):
             x.append(0)
-        # print(x)
-        #sys.exit()
 
+        #sys.exit()
         return tmp
     else:
         return 0
@@ -74,7 +73,6 @@ def load(path):
         else:
 
             x = process_line(line)
-            print('\n')
             if(x!=0):
                 mid.append(x)
 
@@ -84,6 +82,7 @@ files=file_name("./new_content/")
 for file in files:
     if(file!='.DS_Store'):
         load(file)
+
 X1=X[:int(2*len(X)/3)]
 
 X2=X[int(2*len(X)/3)+1:]
