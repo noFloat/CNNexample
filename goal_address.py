@@ -111,7 +111,15 @@ def search_goal(param,db):
             sql2="select  *   from location where  x1 < " + result1 + " and x2 > "+result1+"  and y1 < "+result2+" and y2 > "+result2+";"
             cursor.execute(sql2)
             results2 = cursor.fetchall()
-            return results2[0][0]
+            try:
+
+                if(len(results2)!=0):
+                    return results2[0][0]
+                else:
+                    return 0
+            except ZeroDivisionError as e:
+                print('except:', e)
+
         else:
             return 0
         sys.exit()

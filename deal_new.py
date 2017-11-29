@@ -1,8 +1,6 @@
 import numpy as np
 import os
-import theano
-import sys
-import keras
+import threading
 import goal_address
 np.random.seed(1337)
 path='1.txt'
@@ -52,4 +50,7 @@ files=file_name("./txt/")
 
 for file in files:
     if(file!='.DS_Store'):
-        load(file)
+        #load(file)
+        t = threading.Thread(target=load(file), name=file)
+        t.start()
+        t.join()
