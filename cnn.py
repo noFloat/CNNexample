@@ -8,10 +8,6 @@ from keras.datasets import mnist
 from keras.utils import np_utils
 from keras.models import Sequential
 from keras.layers import *
-from keras.layers.merge import add,Add
-from keras.optimizers import Adam
-from keras.preprocessing import sequence
-from keras.utils.np_utils import to_categorical
 from keras.callbacks import EarlyStopping
 
 import goal_address
@@ -83,11 +79,10 @@ for file in files:
     if(file!='.DS_Store'):
         load(file)
 
-X1=X[:int(2*len(X)/3)]
-
-X2=X[int(2*len(X)/3)+1:]
-Y1=X[:int(2*len(Y)/3)]
-Y2=X[int(2*len(Y)/3)+1:]
+X1=X[:int(len(X)/2)]
+X2=X[int(len(X)/2)+1:]
+Y1=X[:int(len(Y)/2)]
+Y2=X[int(len(Y)/2)+1:]
 X1 = np.array(X1)
 Y1 = np.array(Y1)
 X2 = np.array(X2)
@@ -146,7 +141,7 @@ model.add(Conv1D(200,
                  5,
                  padding='same',
                  activation='tanh',
-                 input_shape=(57,100)))
+                 input_shape=(32,100)))
 
 
 # model.add(Conv1D(200, 2,
@@ -163,7 +158,7 @@ model.add(Conv1D(200,
                  5,
                  padding='same',
                  activation='tanh',
-                 input_shape=(57,100)))
+                 input_shape=(32,100)))
 model.add(MaxPooling1D(pool_size=1)) #池化层
 model.add(Dropout(0.25))
 #model.add(Flatten()) #拉成一维数据
@@ -197,7 +192,7 @@ model.compile(loss='categorical_crossentropy',optimizer=sgd,metrics=['accuracy']
 #                           optimizer=keras.optimizers.Adadelta())
 
 early_stopping =EarlyStopping(monitor='val_loss', patience=2)
-model.fit(X1,Y1,epochs=1, batch_size=32,validation_split=0.2, callbacks=[early_stopping])
+model.fit(X1,Y1,epochs=1, batch_size=32)
 #
 loss, accuracy = model.evaluate(X2, Y2)
 

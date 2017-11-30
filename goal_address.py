@@ -95,6 +95,24 @@ def search_data(param,low,max,db):
         print('except:', e)
         db.rollback()
 
+#模糊判断地名是否存在
+def check_goal(name,db):
+    cursor = db.cursor()
+    param = name.replace("'", "")
+    sql = "select  *   from address_last where  address_name like '%" + param + "%';"
+    try:
+        cursor.execute(sql)
+        results = cursor.fetchall()
+
+        if (len(results) != 0):
+            return True
+
+        else:
+            return False
+    except ZeroDivisionError as e:
+        print('except:', e)
+        print(results)
+
 
 # 文档名字替换
 def search_goal(param,db):
@@ -122,7 +140,7 @@ def search_goal(param,db):
 
         else:
             return 0
-        sys.exit()
+
     except ZeroDivisionError as e:
         print('except:', e)
         print(results)
