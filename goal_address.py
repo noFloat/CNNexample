@@ -114,6 +114,8 @@ def check_goal(name,db):
         print(results)
 
 
+
+
 # 文档名字替换
 def search_goal(param,db):
     cursor = db.cursor()
@@ -141,6 +143,23 @@ def search_goal(param,db):
         else:
             return 0
 
+    except ZeroDivisionError as e:
+        print('except:', e)
+        print(results)
+#判断是不是动词
+def check_verbs(name,db):
+    cursor = db.cursor()
+    param = name.replace("'", "")
+    sql = "select  *   from verbs where  content = '" + name + "';"
+    try:
+        cursor.execute(sql)
+        results = cursor.fetchall()
+
+        if (len(results) != 0):
+            return False
+
+        else:
+            return True
     except ZeroDivisionError as e:
         print('except:', e)
         print(results)

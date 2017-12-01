@@ -45,7 +45,8 @@ def check_exist(path,i):
             x = process_line(count)
             if(x):
                 if(goal_address.check_goal(x,db)):
-                    return 1
+                    if(goal_address.check_verbs(x,db)):
+                        return 1
 
         i+=1
         count = linecache.getline(path, i)
