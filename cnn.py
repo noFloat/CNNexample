@@ -22,6 +22,9 @@ def file_name(file_dir):
              return files
 
 def process_line(line):
+    tmp=line.strip('\n').rstrip().split(',')
+    return tmp
+    sys.exit()
     lineSpilt = line.split(' ',1)
 
 
@@ -42,16 +45,40 @@ def process_line(line):
         return tmp
     else:
         return 0
+
+#原来的
+def process_line2(line):
+    lineSpilt = line.split(' ',1)
+
+
+    str1="[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+"
+    str2=""
+    string = re.sub(str1, str2, lineSpilt[0])
+
+
+    if(string!=''):
+
+        goalLine=lineSpilt[1]
+        tmp = [float(val) for val in goalLine.strip('\n').rstrip().split(' ')]
+        x = np.array(tmp[0:])
+        for i in(range(100-len(x))):
+            x.append(0)
+
+        #sys.exit()
+        return tmp
+    else:
+        return 0
+
 X = []
 Y = []
 
 
 
 def load(path):
-    f = open("./new_content/"+path)
+    f = open("./screen_content/"+path,encoding='utf-8')
     type = 1
     mid = []
-    list = [0.0 for i in range(200)]
+    list = [0.0 for i in range(60)]
 
     for line in f:
 
@@ -69,12 +96,13 @@ def load(path):
         else:
 
             x = process_line(line)
+
             if(x!=0):
                 mid.append(x)
 
     f.close()
 
-files=file_name("./new_content/")
+files=file_name("./screen_content/")
 for file in files:
     if(file!='.DS_Store'):
         load(file)
@@ -89,14 +117,14 @@ X2 = np.array(X2)
 Y2 = np.array(Y2)
 
 
-X1=X1.reshape(len(X1),100,200)
-X2=X2.reshape(len(X2),100,200)
+X1=X1.reshape(len(X1),100,60)
+X2=X2.reshape(len(X2),100,60)
 
 model = Sequential()
 
 
 nb_words = min(7000, len(X1))
-embedding_matrix = np.zeros((nb_words + 1, 200))
+embedding_matrix = np.zeros((nb_words + 1, 60))
 
 # embedding_layer = Embedding(nb_words+1,
 #                             200,
@@ -105,8 +133,8 @@ embedding_matrix = np.zeros((nb_words + 1, 200))
 #                             trainable=True)
 
 embedding_layer = Embedding(nb_words+1,
-                            200,
-                            input_shape=(100,200),
+                            60,
+                            input_shape=(100,60),
                             weights=[embedding_matrix],
                             trainable=True)
 model_left = Sequential()
@@ -133,11 +161,11 @@ model_3.add(Flatten())
 #merged = Merge([model_left,model_3],concat_axis=1)
 
 
-model.add(Dense(units=200,batch_input_shape=(32,100,200)))
+model.add(Dense(units=200,batch_input_shape=(32,100,60)))
 
 #model.add(model_3)
 
-model.add(Conv1D(200,
+model.add(Conv1D(60,
                  5,
                  padding='same',
                  activation='tanh',
@@ -150,26 +178,27 @@ model.add(Conv1D(200,
 #model.add(Activation('relu')) #激活层
 
 model.add(MaxPooling1D(pool_size=1)) #池化层
-#model.add(Dropout(0.25))
+model.add(Dropout(0.25))
 #model.add(Flatten()) #拉成一维数据
 
 
-model.add(Conv1D(200,
+model.add(Conv1D(60,
                  5,
                  padding='same',
                  activation='tanh',
-                 input_shape=(32,100)))
+                 input_shape=(32,60)))
 model.add(MaxPooling1D(pool_size=1)) #池化层
 model.add(Dropout(0.25))
 #model.add(Flatten()) #拉成一维数据
 
 
+
 model.summary()
 #model.add(Reshape((100, 200)))
-#model.add(Dense(1)) #全连接层1
+#model.add(Dense(160)) #全连接层1
 model.add(Activation('relu')) #激活层
 model.add(Dropout(0.5))
-# model.add(Dense(200)) #全连接层2
+model.add(Dense(60)) #全连接层2
 # model.add(Reshape((100, 200)))
 model.add(Activation('softmax'))
 
@@ -192,7 +221,7 @@ model.compile(loss='categorical_crossentropy',optimizer=sgd,metrics=['accuracy']
 #                           optimizer=keras.optimizers.Adadelta())
 
 early_stopping =EarlyStopping(monitor='val_loss', patience=2)
-model.fit(X1,Y1,epochs=1, batch_size=32)
+model.fit(X1,Y1,epochs=10, batch_size=32)
 #
 loss, accuracy = model.evaluate(X2, Y2)
 

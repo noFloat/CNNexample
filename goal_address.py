@@ -99,12 +99,14 @@ def search_data(param,low,max,db):
 def check_goal(name,db):
     cursor = db.cursor()
     param = name.replace("'", "")
-    sql = "select  *   from address_last where  address_name like '%" + param + "%';"
+    #sql = "select  *   from address_last where  address_name like '%" + param + "%';"
+    sql = "select  *   from address_last where  address_name = '" + param + "';"
     try:
         cursor.execute(sql)
         results = cursor.fetchall()
 
         if (len(results) != 0):
+            print(results)
             return True
 
         else:
