@@ -90,7 +90,6 @@ def load(path):
     os.remove("./line/" + path)
 files=file_name("./line/")
 
-a='大宇宙信息系统(上海)公司   好 牛 逼 的 名字 ！ ？ ！ ！ ？ ！ ！ '
 
 
 for file in files:

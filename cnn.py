@@ -107,10 +107,11 @@ for file in files:
     if(file!='.DS_Store'):
         load(file)
 
+
 X1=X[:int(len(X)/2)]
 X2=X[int(len(X)/2)+1:]
-Y1=X[:int(len(Y)/2)]
-Y2=X[int(len(Y)/2)+1:]
+Y1=Y[:int(len(Y)/2)]
+Y2=Y[int(len(Y)/2)+1:]
 X1 = np.array(X1)
 Y1 = np.array(Y1)
 X2 = np.array(X2)
@@ -121,7 +122,6 @@ X1=X1.reshape(len(X1),100,60)
 X2=X2.reshape(len(X2),100,60)
 
 model = Sequential()
-
 
 nb_words = min(7000, len(X1))
 embedding_matrix = np.zeros((nb_words + 1, 60))
@@ -189,7 +189,7 @@ model.add(Conv1D(60,
                  input_shape=(32,60)))
 model.add(MaxPooling1D(pool_size=1)) #池化层
 model.add(Dropout(0.25))
-#model.add(Flatten()) #拉成一维数据
+model.add(Flatten()) #拉成一维数据
 
 
 
@@ -198,8 +198,7 @@ model.summary()
 #model.add(Dense(160)) #全连接层1
 model.add(Activation('relu')) #激活层
 model.add(Dropout(0.5))
-model.add(Dense(60)) #全连接层2
-# model.add(Reshape((100, 200)))
+model.add(Dense(646)) #全连接层2
 model.add(Activation('softmax'))
 
 #
@@ -214,14 +213,14 @@ model.summary()
 # model.add(Reshape((100, 200)))
 # #model.add(Dense(1))
 # model.add(Activation('linear'))
-sgd = keras.optimizers.SGD(lr=0.005, decay=1e-6, momentum=0.9, nesterov=True)
-model.compile(loss='categorical_crossentropy',optimizer=sgd,metrics=['accuracy'])
+# sgd = keras.optimizers.SGD(lr=0.005, decay=1e-6, momentum=0.9, nesterov=True)
+# model.compile(loss='categorical_crossentropy',optimizer=sgd,metrics=['accuracy'])
 
-# model.compile(loss='mean_squared_error',
-#                           optimizer=keras.optimizers.Adadelta())
+model.compile(loss='mean_squared_error',
+                          optimizer=keras.optimizers.Adadelta())
 
 early_stopping =EarlyStopping(monitor='val_loss', patience=2)
-model.fit(X1,Y1,epochs=10, batch_size=32)
+model.fit(X1,Y1,epochs=1, batch_size=32)
 #
 loss, accuracy = model.evaluate(X2, Y2)
 
