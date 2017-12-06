@@ -151,35 +151,35 @@ def search_goal(param,db):
         print(results)
 
     # 文档名字替换
-    def search_goal(param, db):
-        cursor = db.cursor()
-        param = param.replace("'", "")
-        sql = "select  *   from address_last where  address_name ='" + param + "';"
-        try:
-            cursor.execute(sql)
-            results = cursor.fetchall()
+def search_goal2(param, db):
+    cursor = db.cursor()
+    param = param.replace("'", "")
+    sql = "select  *   from address_last where  address_name ='" + param + "';"
+    try:
+        cursor.execute(sql)
+        results = cursor.fetchall()
 
-            if (len(results) != 0):
-                result1 = str(results[0][1])
-                result2 = str(results[0][2])
-                sql2 = "select  *   from location where  x1 < " + result1 + " and x2 > " + result1 + "  and y1 < " + result2 + " and y2 > " + result2 + ";"
-                cursor.execute(sql2)
-                results2 = cursor.fetchall()
-                try:
+        if (len(results) != 0):
+            result1 = str(results[0][1])
+            result2 = str(results[0][2])
+            sql2 = "select  *   from location_55 where  x1 < " + result1 + " and x2 > " + result1 + "  and y1 < " + result2 + " and y2 > " + result2 + ";"
+            cursor.execute(sql2)
+            results2 = cursor.fetchall()
+            try:
 
-                    if (len(results2) != 0):
-                        return results2[0][0]
-                    else:
-                        return 0
-                except ZeroDivisionError as e:
-                    print('except:', e)
+                if (len(results2) != 0):
+                    return results2[0][0]
+                else:
+                    return 0
+            except ZeroDivisionError as e:
+                print('except:', e)
 
-            else:
-                return 0
+        else:
+            return 0
 
-        except ZeroDivisionError as e:
-            print('except:', e)
-            print(results)
+    except ZeroDivisionError as e:
+        print('except:', e)
+        print(results)
 #判断是不是动词
 def check_verbs(name,db):
     cursor = db.cursor()

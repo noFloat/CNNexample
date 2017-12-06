@@ -10,3 +10,9 @@
 ##
 最小x 120.229161 最大x 129.436712
 最小y 29.15216  最大y 45.828799
+
+##配置
+    mysql.conf.copy换成mysql.conf并配置数据库账号密码
+    goal_address.py有处理方法
+    get_content只替换地址
+    screen替换地址和动词

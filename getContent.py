@@ -61,7 +61,7 @@ def load(path):
         type_content = 0
         now_state = 0
         if(True):
-            goal = goal_address.search_goal(words[0], db)
+            goal = goal_address.search_goal2(words[0], db)
             state = 1
             if (goal != 0):
                 type_content = 1
