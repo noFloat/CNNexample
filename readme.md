@@ -13,6 +13,9 @@
 
 ##配置
     mysql.conf.copy换成mysql.conf并配置数据库账号密码
-    goal_address.py有处理方法
     get_content只替换地址
     screen替换地址和动词
+
+##说明
+* goal_address.py有处理方法(包括数据库处理)goal_address.search_goal2 返回位置 search_goal 返回x,y,location
+* getContent.py获取文件
