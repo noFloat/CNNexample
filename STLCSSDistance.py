@@ -124,7 +124,7 @@ def load(path):
         return
     X.append(X1)
     f.close()
-    f2.close()
+    #f2.close()
     #os.remove("./line/" + path)
 
 

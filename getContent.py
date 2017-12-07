@@ -71,7 +71,6 @@ def load(path):
                 type_content=0
                 continue
             now_words = words[1].strip('\n').rstrip().split()
-            print(now_words)
             now_state=0
             for now_word in now_words:
                 now_str+=' '

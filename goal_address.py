@@ -165,6 +165,7 @@ def search_goal2(param, db):
             sql2 = "select  *   from location_55 where  x1 < " + result1 + " and x2 > " + result1 + "  and y1 < " + result2 + " and y2 > " + result2 + ";"
             cursor.execute(sql2)
             results2 = cursor.fetchall()
+
             try:
 
                 if (len(results2) != 0):
