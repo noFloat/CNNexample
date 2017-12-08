@@ -4,10 +4,14 @@ import numpy as np
 import os,re,sys
 import goal_address
 
-Distance=0.1
-Time=86400*2
+Distance=0.1#0.1，0.15，0.05，0.01
+Time=86400/24#0.5,1,1.5,2
+similiarity=0.3#0.3-0.6
 startTime1=0
 startTime2=0
+
+matrix_width=630
+
 db = goal_address.connectdb()
 num=0
 
@@ -90,7 +94,7 @@ def load(path):
     f = open("./file_for_time/"+path)
 
     X1=[]
-
+    matrix = [path]
     for line in f:
         time_need=line.split()
         i=0
@@ -122,6 +126,26 @@ def load(path):
 
     if len(X1)==0:
         return
+    ###求转移矩阵
+    matrix_mid =[[0 for col in range(matrix_width+1)] for row in range(matrix_width+1)]#次数
+    matrix_chance = [[0 for col in range(matrix_width + 1)] for row in range(matrix_width + 1)]#概率矩阵
+
+    for i in range(len(X1)-1):
+        matrix_mid[X1[i][1][2]][X1[i+1][1][2]]+=1
+
+    chance=[0 for row in range(matrix_width)]
+    for i in range(matrix_width):
+        for j in range(matrix_width):
+            now_chance=sum(matrix_mid[i])
+            if (chance[i] == 0):
+                matrix_chance[i][j] = 0
+            else:
+                matrix_chance[i][j] += matrix_mid[i][j] / now_chance
+            chance[i] += matrix_mid[i][j]
+
+    sys.exit()
+    print(matrix_chance[296][296])
+    ##转移矩阵结束
     X.append(X1)
     f.close()
     #f2.close()
@@ -136,6 +160,7 @@ def file_name(file_dir):
 
 
 X=[]
+Matrix=[]
 
 files=file_name("./file_for_time/")
 startTime=13502661600
