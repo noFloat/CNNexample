@@ -24,7 +24,6 @@ def insertdb(db,table,line):
         db.commit()
     except ZeroDivisionError as e:
         print('except:', e)
-        print(line.name)
         db.rollback()
 
 def errDate(db):
@@ -106,7 +105,6 @@ def check_goal(name,db):
         results = cursor.fetchall()
 
         if (len(results) != 0):
-            print(results)
             return True
 
         else:
@@ -162,7 +160,7 @@ def search_goal2(param, db):
         if (len(results) != 0):
             result1 = str(results[0][1])
             result2 = str(results[0][2])
-            sql2 = "select  *   from location_55 where  x1 < " + result1 + " and x2 > " + result1 + "  and y1 < " + result2 + " and y2 > " + result2 + ";"
+            sql2 = "select  *   from location_14 where  x1 < " + result1 + " and x2 > " + result1 + "  and y1 < " + result2 + " and y2 > " + result2 + ";"
             cursor.execute(sql2)
             results2 = cursor.fetchall()
 
@@ -180,7 +178,6 @@ def search_goal2(param, db):
 
     except ZeroDivisionError as e:
         print('except:', e)
-        print(results)
 #判断是不是动词
 def check_verbs(name,db):
     cursor = db.cursor()
@@ -197,4 +194,3 @@ def check_verbs(name,db):
             return True
     except ZeroDivisionError as e:
         print('except:', e)
-        print(results)
