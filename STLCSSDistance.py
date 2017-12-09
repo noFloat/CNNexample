@@ -18,14 +18,23 @@ db = goal_address.connectdb()
 num=0
 
 def getLen(p1,p2):
-    x=p1[1][0]-p2[1][0]
-    y = p1[1][1] - p2[1][1]
-    len=math.sqrt(x**2+y**2)
-    return len
+    #
+    # p1_len=len(p1)
+    # p2_len = len(p2)
+
+    if isinstance(p1,list):
+        x = p1[1][0] - p2[1][0]
+        y = p1[1][1] - p2[1][1]
+        len_now = math.sqrt(x ** 2 + y ** 2)
+        return len_now
+    else:
+        return -1
+
 
 def subcost(p1,p2):
     isSame = True
-
+    if(abs(getLen(p1,p2))<0):
+        isSame = False
 
     if (abs(getLen(p1,p2)) > Distance):
         isSame=False
@@ -163,11 +172,12 @@ def file_name(file_dir):
 
 def search_same(x1_point,x2):
     goal=0
-    minus_time=1000000000000000
+    minus_len=5
     #print(x2)
     for i in range(len(x2)):
-        if(abs(x2[i][0]-x1_point[0])<minus_time):
-            minus_time=abs(x2[i][0]-x1_point[0])
+        now_len=getLen(x2[i],x1_point)
+        if(now_len!=-1)&(now_len<minus_len)&subcost(x1_point,x2[i]):
+            minus_len=now_len
             goal=i
 
     if(subcost(x1_point,x2[goal])):
@@ -192,7 +202,7 @@ def predict(i):
         point_now = [x1_now[j][0],[l_pre[1][0],l_pre[1][1]]]
         rate_each_weibo=[]
         distance_each_weibo = []
-
+        # 计算相似度
         for i in range(friend_num):
             x2_no = x_re[i]
             x2 = X[x2_no]
@@ -207,6 +217,7 @@ def predict(i):
                 sum_dist+=distance_each_weibo[i][0]
         max_rate_weibo=0
         max_rate_weibo_id=-1
+
         for i in range(friend_num):
             if sum_dist==0:
                 rate_each_weibo.append(0)
@@ -231,6 +242,7 @@ def predict(i):
         rate_weibo.append(rate_each_weibo)
     count=0
 
+    #计算概率
     for i in range(len(x1_now)):
         if(x1_now[i][1][2]==rate_best[i][3]):
             count+=1
