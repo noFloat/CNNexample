@@ -275,7 +275,7 @@ def predict3(i):
         area=Matrix[i][1][int(l_pre[1][2])].index(max_rate)
         if(len(x1_now)==0):
             return 0.0
-        if(x1_now[i][1][2]==area):
+        if(x1_now[j][1][2]==area):
             count+=1
 
     return count / len(x1_now)
