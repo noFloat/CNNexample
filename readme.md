@@ -19,3 +19,6 @@
 ##说明
 * goal_address.py有处理方法(包括数据库处理)goal_address.search_goal2 返回位置 search_goal 返回x,y,location
 * getContent.py获取文件
+
+#getStlccsdistance
+    使用不同范围的时候要把goal_address.py的search_goal()方法里的163行表名换成对应的表，同时全局变量matrix_width换成对应表的行数(区域数)
