@@ -5,7 +5,7 @@ import os,re,sys
 import goal_address
 
 Distance=0.1#0.1，0.15，0.05，0.01
-Time=86400#0.5,1,1.5,2
+Time=86400*0.5#0.5,1,1.5,2
 similiarity=0.3#0.3-0.6
 startTime1=0
 startTime2=0
@@ -74,6 +74,8 @@ def getSTLCSS(r, s):
 
 
     lcss= LCSSMetric[r_size-1][s_size-1]
+    if min(r_size, s_size)==0:
+        return 0.0
     distanceV=lcss / min(r_size, s_size)
     if distanceV>1:
         print(str(lcss)+'  '+str(r_size)+'   '+str(s_size))
@@ -124,7 +126,6 @@ def load(path):
             global  startTime
             if(timestamp<startTime):
                 startTime=timestamp
-            point=Point(timestamp,)
             mid=[]
             mid=[getTime(time),goal]
             X1.append(mid)
@@ -359,7 +360,7 @@ def predict2_3(i):
         max_rate=max(matrix_now[i][1][int(l_pre[1][2])])
         area=matrix_now[i][1][int(l_pre[1][2])].index(max_rate)
 
-        if(x1_now[i][1][2]==area):
+        if(x1_now[j][1][2]==area):
             count+=1
 
     return count / len(x1_now)
@@ -401,6 +402,7 @@ for i in range(len(X)):
 
 #feature2
 f2=open("./feature_result.txt",'w')
+
 
 
 for i in range(len(X)):
