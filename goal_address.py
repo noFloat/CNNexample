@@ -10,7 +10,7 @@ def connectdb():
     password = conf.get("mysql", "password")
     dbname = conf.get("mysql", "dbname")
     db = MySQLdb.connect("localhost",name,password,dbname )
-    db.set_character_set('utf8')
+    db.set_character_set('utf8mb4')
     return db
 def insertdb(db,table,line):
     cursor = db.cursor()
@@ -160,7 +160,7 @@ def search_goal2(param, db):
         if (len(results) != 0):
             result1 = str(results[0][1])
             result2 = str(results[0][2])
-            sql2 = "select  *   from location_55 where  x1 < " + result1 + " and x2 > " + result1 + "  and y1 < " + result2 + " and y2 > " + result2 + ";"
+            sql2 = "select  *   from location_001 where  x1 < " + result1 + " and x2 > " + result1 + "  and y1 < " + result2 + " and y2 > " + result2 + ";"
             cursor.execute(sql2)
             results2 = cursor.fetchall()
 
