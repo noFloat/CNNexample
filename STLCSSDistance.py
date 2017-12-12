@@ -118,9 +118,7 @@ def load(path):
                 time += word
                 time+=' '
             i += 1
-        location = location.split('。')
-
-        location=location[0]
+        
 
         goal = goal_address.search_goal(location, db)
 
@@ -138,24 +136,24 @@ def load(path):
     if len(X1)==0:
         return
     ##求转移矩阵
-    # matrix_mid =[[0 for col in range(matrix_width+1)] for row in range(matrix_width+1)]#次数
-    # matrix_chance = [[0 for col in range(matrix_width + 1)] for row in range(matrix_width + 1)]#概率矩阵
-    #
-    # for i in range(len(X1)-1):
-    #     matrix_mid[X1[i][1][2]][X1[i+1][1][2]]+=1
-    #
-    # chance=[0 for row in range(matrix_width)]
-    # for i in range(matrix_width):
-    #     for j in range(matrix_width):
-    #         now_chance=sum(matrix_mid[i])
-    #         if (chance[i] == 0):
-    #             matrix_chance[i][j] = 0
-    #         else:
-    #             matrix_chance[i][j] += matrix_mid[i][j] / now_chance
-    #         chance[i] += matrix_mid[i][j]
-    #
-    # mid_mat=[matrix_mid,matrix_chance]
-    # Matrix.append(mid_mat)
+    matrix_mid =[[0 for col in range(matrix_width+1)] for row in range(matrix_width+1)]#次数
+    matrix_chance = [[0 for col in range(matrix_width + 1)] for row in range(matrix_width + 1)]#概率矩阵
+
+    for i in range(len(X1)-1):
+        matrix_mid[X1[i][1][2]][X1[i+1][1][2]]+=1
+
+    chance=[0 for row in range(matrix_width)]
+    for i in range(matrix_width):
+        for j in range(matrix_width):
+            now_chance=sum(matrix_mid[i])
+            if (chance[i] == 0):
+                matrix_chance[i][j] = 0
+            else:
+                matrix_chance[i][j] += matrix_mid[i][j] / now_chance
+            chance[i] += matrix_mid[i][j]
+
+    mid_mat=[matrix_mid,matrix_chance]
+    Matrix.append(mid_mat)
 
     #转移矩阵结束
     Path.append(path)
