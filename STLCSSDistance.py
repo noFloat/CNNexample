@@ -74,7 +74,7 @@ def getSTLCSS(r, s):
 
 
     lcss= LCSSMetric[r_size-1][s_size-1]
-    if min(r_size, s_size)==0:
+    if min(r_size, s_size) == 0:
         return 0.0
     distanceV=lcss / min(r_size, s_size)
     if distanceV>1:
@@ -118,6 +118,9 @@ def load(path):
                 time += word
                 time+=' '
             i += 1
+        location = location.split('。')
+
+        location=location[0]
 
         goal = goal_address.search_goal(location, db)
 
@@ -134,27 +137,27 @@ def load(path):
 
     if len(X1)==0:
         return
-    ###求转移矩阵
-    matrix_mid =[[0 for col in range(matrix_width+1)] for row in range(matrix_width+1)]#次数
-    matrix_chance = [[0 for col in range(matrix_width + 1)] for row in range(matrix_width + 1)]#概率矩阵
+    ##求转移矩阵
+    # matrix_mid =[[0 for col in range(matrix_width+1)] for row in range(matrix_width+1)]#次数
+    # matrix_chance = [[0 for col in range(matrix_width + 1)] for row in range(matrix_width + 1)]#概率矩阵
+    #
+    # for i in range(len(X1)-1):
+    #     matrix_mid[X1[i][1][2]][X1[i+1][1][2]]+=1
+    #
+    # chance=[0 for row in range(matrix_width)]
+    # for i in range(matrix_width):
+    #     for j in range(matrix_width):
+    #         now_chance=sum(matrix_mid[i])
+    #         if (chance[i] == 0):
+    #             matrix_chance[i][j] = 0
+    #         else:
+    #             matrix_chance[i][j] += matrix_mid[i][j] / now_chance
+    #         chance[i] += matrix_mid[i][j]
+    #
+    # mid_mat=[matrix_mid,matrix_chance]
+    # Matrix.append(mid_mat)
 
-    for i in range(len(X1)-1):
-        matrix_mid[X1[i][1][2]][X1[i+1][1][2]]+=1
-
-    chance=[0 for row in range(matrix_width)]
-    for i in range(matrix_width):
-        for j in range(matrix_width):
-            now_chance=sum(matrix_mid[i])
-            if (chance[i] == 0):
-                matrix_chance[i][j] = 0
-            else:
-                matrix_chance[i][j] += matrix_mid[i][j] / now_chance
-            chance[i] += matrix_mid[i][j]
-
-    mid_mat=[matrix_mid,matrix_chance]
-    Matrix.append(mid_mat)
-
-    ##转移矩阵结束
+    #转移矩阵结束
     Path.append(path)
     X.append(X1)
     f.close()
@@ -190,6 +193,7 @@ def predict2(i):
 
     len_x1 = int(len(x1_now))
     friend_num = len(x_re)
+
     rate_weibo = []
     rate_best = []
     for j in range(len_x1):
@@ -246,6 +250,9 @@ def predict2(i):
                 area = -1
             else:
                 area = X[weibo_host][max_rate_weibo_id][1][2]
+
+
+
             rate_best.append([int(len(x1) / 2) - 1 + j, max(rate_each_weibo), weibo_host, area])
             rate_weibo.append(rate_each_weibo)
 
@@ -354,7 +361,6 @@ def predict2_3(i):
             if rate_weibo[j][web_id][0]!=0:
                 area_now_id=rate_weibo[j][web_id][0]
                 origin_matrix_point=matrix_now[i][1][int(l_pre[1][2])][area_now_id]
-                print(origin_matrix_point)
                 matrix_now[i][1][int(l_pre[1][2])][area_now_id]=rate_weibo[j][web_id][1]*feature2+origin_matrix_point*feature3
 
         max_rate=max(matrix_now[i][1][int(l_pre[1][2])])
@@ -406,7 +412,7 @@ f2=open("./feature_result.txt",'w')
 
 
 for i in range(len(X)):
-    a=predict2_3(i)
+
     str_now = str(Path[i]) + '|'
     str_now += str(predict2(i))
     str_now += '|'
