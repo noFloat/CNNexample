@@ -4,7 +4,7 @@ import numpy as np
 import os,re,sys
 import goal_address
 import shutil
-
+area_users_name='./area_users/'
 Distance=0.1#0.1，0.15，0.05，0.01
 Time=86400*0.5#0.5,1,1.5,2
 similiarity=0.3#0.3-0.6
@@ -22,18 +22,18 @@ def folder_name(file_dir):
     for root, dirs, files in os.walk(file_dir):
         return dirs
 def delete_folder():
-    folders=folder_name('./area_users')
+    folders=folder_name(area_users_name)
     for folder in folders:
-        ls = os.listdir('./area_users/'+folder)
+        ls = os.listdir(area_users_name+folder)
         count=0
         for i in ls:
-            if os.path.isfile(os.path.join('./area_users/'+folder, i)):
+            if os.path.isfile(os.path.join(area_users_name+folder, i)):
                 count += 1
         if count<10:
-            files_now=file_name('./area_users/'+folder)
+            files_now=file_name(area_users_name+folder)
             for file in  files_now:
-                os.remove('./area_users/'+folder+'/'+file)
-            os.rmdir('./area_users/'+folder)
+                os.remove(area_users_name+folder+'/'+file)
+            os.rmdir(area_users_name+folder)
 
 
 
@@ -194,7 +194,7 @@ def load(path):
         if all_area.count(i)>max_num:
             now_area=i
             max_num=now_area
-    now_postion='./area_users/'+str(now_area)
+    now_postion=area_users_name+str(now_area)
     mkdir(now_postion)
     shutil.copyfile(prefix+path, now_postion+'/'+path)
     print(now_area)
