@@ -118,8 +118,8 @@ def load(path):
                 time += word
                 time+=' '
             i += 1
-
-
+        location = location.split('。')
+        location = location[0]
         goal = goal_address.search_goal(location, db)
 
         if (goal != 0):
@@ -406,7 +406,6 @@ for i in range(len(X)):
 
 #feature2
 f2=open("./feature_result.txt",'w')
-
 
 
 for i in range(len(X)):
