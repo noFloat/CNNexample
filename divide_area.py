@@ -34,8 +34,7 @@ def delete_folder():
             for file in  files_now:
                 os.remove('./area_users/'+folder+'/'+file)
             os.rmdir('./area_users/'+folder)
-delete_folder()
-sys.exit()
+
 
 
 def getLen(p1,p2):
@@ -236,7 +235,6 @@ for file in files:
     if(file!='.DS_Store'):
         load(file)
 
-
-rate=[[0 for col in range(len(X))] for row in range(len(X))]
+delete_folder()
 
 sys.exit()
