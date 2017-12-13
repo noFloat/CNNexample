@@ -153,7 +153,7 @@ def load(path):
             chance[i] += matrix_mid[i][j]
 
     mid_mat=[matrix_mid,matrix_chance]
-    # Matrix.append(mid_mat)
+    Matrix.append(mid_mat)
 
     #转移矩阵结束
     Path.append(path)
