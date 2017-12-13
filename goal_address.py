@@ -10,7 +10,7 @@ def connectdb():
     password = conf.get("mysql", "password")
     dbname = conf.get("mysql", "dbname")
     db = pymysql.connect(host="127.0.0.1", port=3306, user=name, passwd=password, db=dbname, charset='utf8mb4')
-    db.set_character_set('utf8mb4')
+    #db.set_character_set('utf8mb4')
     return db
 def connectdb2():
     conf = configparser.ConfigParser()
