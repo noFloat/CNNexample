@@ -1,4 +1,4 @@
-import MySQLdb
+import pymysql
 import configparser
 import sys
 import linecache
@@ -9,8 +9,16 @@ def connectdb():
     name = conf.get("mysql", "name")
     password = conf.get("mysql", "password")
     dbname = conf.get("mysql", "dbname")
-    db = MySQLdb.connect("localhost",name,password,dbname )
+    db = pymysql.connect(host="127.0.0.1", port=3306, user=name, passwd=password, db=dbname, charset='utf8mb4')
     db.set_character_set('utf8mb4')
+    return db
+def connectdb2():
+    conf = configparser.ConfigParser()
+    conf.read("../mysql.conf")
+    name = conf.get("mysql", "name")
+    password = conf.get("mysql", "password")
+    dbname = conf.get("mysql", "dbname")
+    db = pymysql.connect(host="127.0.0.1", port=3306, user=name, passwd=password, db=dbname, charset='utf8mb4')
     return db
 def insertdb(db,table,line):
     cursor = db.cursor()
