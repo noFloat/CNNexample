@@ -136,7 +136,7 @@ def search_goal(param,db):
         if(len(results)!=0):
             result1 = str(results[0][1])
             result2 = str(results[0][2])
-            sql2="select  *   from location_55 where  x1 < " + result1 + " and x2 > "+result1+"  and y1 < "+result2+" and y2 > "+result2+";"
+            sql2="select  *   from location_14 where  x1 < " + result1 + " and x2 > "+result1+"  and y1 < "+result2+" and y2 > "+result2+";"
             cursor.execute(sql2)
             results2 = cursor.fetchall()
             try:
@@ -168,7 +168,7 @@ def search_goal2(param, db):
         if (len(results) != 0):
             result1 = str(results[0][1])
             result2 = str(results[0][2])
-            sql2 = "select  *   from location_001 where  x1 < " + result1 + " and x2 > " + result1 + "  and y1 < " + result2 + " and y2 > " + result2 + ";"
+            sql2 = "select  *   from location_14 where  x1 < " + result1 + " and x2 > " + result1 + "  and y1 < " + result2 + " and y2 > " + result2 + ";"
             cursor.execute(sql2)
             results2 = cursor.fetchall()
 
